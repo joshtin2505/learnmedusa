@@ -12,14 +12,6 @@ export type CreateBrandStepInput = {
   name: string;
 };
 
-export const createBrandWorkflow = createWorkflow(
-  "create-brand",
-  (input: CreateBrandStepInput) => {
-    const brand = createBrandStep(input);
-    return new WorkflowResponse(brand);
-  }
-);
-
 export const createBrandStep = createStep(
   "create-brand-step",
   async (input: CreateBrandStepInput, { container }) => {
@@ -29,10 +21,22 @@ export const createBrandStep = createStep(
     const brand = await brandModuleService.createBrands(input);
     return new StepResponse(brand, brand.id);
   },
-  async (id: string, { container }) => {
+  async (id, { container }) => {
+    if (!id) {
+      return;
+    }
+
     const brandModuleService: BrandModuleService =
       container.resolve(BRAND_MODULE);
 
     await brandModuleService.deleteBrands(id);
+  }
+);
+
+export const createBrandWorkflow = createWorkflow(
+  "create-brand",
+  (input: CreateBrandStepInput) => {
+    const brand = createBrandStep(input);
+    return new WorkflowResponse(brand);
   }
 );
