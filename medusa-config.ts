@@ -13,9 +13,20 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     },
   },
+
   modules: [
     {
       resolve: "./src/modules/brand",
     },
   ],
+  plugins: [
+    {
+     resolve: "@minskylab/medusa-payment-mercadopago" ,
+      options:{
+        access_token: process.env.MERCADOPAGO_ACCESS_TOKEN,
+        success_backurl: process.env.MERCADOPAGO_SUCCESS_BACKURL,
+        webhook_url: process.env.MERCADOPAGO_WEBHOOK_URL,
+      }
+    }
+  ]
 });
