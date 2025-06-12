@@ -13,10 +13,27 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     },
   },
-
   modules: [
     {
       resolve: "./src/modules/brand",
     },
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "./src/modules/mercadopago",
+            id: "mercadopago",
+            options: {
+              accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN,
+              webhookSecret: process.env.MERCADOPAGO_WEBHOOK_URL,
+              successUrl: process.env.MERCADOPAGO_SUCCESS_BACKURL,
+            }
+
+          }
+        ]
+      }
+    }
+
   ],
 });
